@@ -62,6 +62,16 @@ jobs:
           name: app
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
           #path: app/build/outputs/apk/release/*.apk
+      - name: auto release
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: false
+          files: |
+            ${{steps.sign_app.outputs.signedReleaseFile}}
+            app/build/outputs/apk/release/app-release-unsigned-signed.apk
+            ${{signedReleaseFile}}
+        id: "automatic_releases"
       #- name: upload artefact to App Center
       #  uses: wzieba/AppCenter-Github-Action@v1
       #  with:
