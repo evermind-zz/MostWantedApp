@@ -62,6 +62,10 @@ jobs:
           name: app
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
           #path: app/build/outputs/apk/release/*.apk
+      - name: rename file 
+        run: cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/app-first.apk
+        run: cp ${{steps.sign_app.outputs.signedReleaseFile}} ${{steps.sign_app.outputs}}/app-second.apk
+        #BraveNewPipe_v0.22.0-1.0.5.apk
       - name: auto release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -70,6 +74,8 @@ jobs:
           files: |
             ${{steps.sign_app.outputs.signedReleaseFile}}
             app/build/outputs/apk/release/app-release-unsigned-signed.apk
+            app/build/outputs/apk/release/app-first.apk
+            ${{steps.sign_app.outputs}}/app-second.apk
         id: "automatic_releases"
       #- name: upload artefact to App Center
       #  uses: wzieba/AppCenter-Github-Action@v1
