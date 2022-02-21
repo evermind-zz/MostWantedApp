@@ -28,10 +28,10 @@ jobs:
       - name: generate Changelog
         id: "gen_changelog"
         run: |
-          echo ::set-output name=CHANGELOG::$(git show --no-patch HEAD  --format='%B')
+          echo ::set-output name=CHANGELOG::"$(git show --no-patch HEAD  --format='%B')"
       - name: show me now
         env:
-          CHANGELOG: ${{ steps.gen_changelog.outputs.CHANGELOG }}
+          CHANGELOG: "${{ steps.gen_changelog.outputs.CHANGELOG }}"
         run: |
           echo -e "${CHANGELOG}"
           echo "partout"
