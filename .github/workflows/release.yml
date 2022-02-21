@@ -68,18 +68,23 @@ jobs:
           echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
           echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
           echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-      - name: rename file 
+      - name: rename apk
+        id: renamed_apk
         env:
           SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
           SOURCE_BRANCH: ${{ steps.branch_name.outputs.SOURCE_BRANCH }}
           SOURCE_TAG: ${{ steps.branch_name.outputs.SOURCE_TAG }}
           SIGNED_APK: ${{ steps.sign_app.outputs.signedReleaseFile }}
         run: |
-          echo $SOURCE_NAME
-          echo $SOURCE_BRANCH
-          echo $SOURCE_TAG
-          ls -laht app/build/outputs/apk/release/*
+          echo ::set-output name=RENAMED_APK::${SIGNED_APK%/*}/BraveNewPipe_${SOURCE_TAG}.apk
+          #echo $SOURCE_NAME
+          #echo $SOURCE_BRANCH
+          #echo $SOURCE_TAG
+          #ls -laht app/build/outputs/apk/release/*
           cp ${SIGNED_APK} ${SIGNED_APK%/*}/BraveNewPipe_${SOURCE_TAG}.apk
+          cd ${SIGNED_APK%/*}
+          sha256sum BraveNewPipe_${SOURCE_TAG}.apk > BraveNewPipe_${SOURCE_TAG}.apk.sha256
+          cd -
           ls -laht app/build/outputs/apk/release/*
       - name: auto release
         uses: "marvinpinto/action-automatic-releases@latest"
@@ -87,7 +92,9 @@ jobs:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
           files: |
-            app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
+            ${{ steps.renamed_apk.outputs.RENAMED_APK }}
+            ${{ steps.renamed_apk.outputs.RENAMED_APK }}.sha256
+            #app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
         id: "automatic_releases"
       # evermind - name: pack all app dir
       # evermind   run: tar czpf apper.tgz app
