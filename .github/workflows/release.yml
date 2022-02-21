@@ -65,8 +65,7 @@ jobs:
       - name: rename file 
         run: cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/app-first.apk
       - name: rename file again
-        run: cp ${{steps.sign_app.outputs.signedReleaseFile}} ${{steps.sign_app.outputs}}/app-second.apk
-        #BraveNewPipe_v0.22.0-1.0.5.apk
+        run: cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/BraveNewPipe_${GITHUB_REF#refs/tags/}.apk
       - name: auto release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
