@@ -77,10 +77,6 @@ jobs:
           SIGNED_APK: ${{ steps.sign_app.outputs.signedReleaseFile }}
         run: |
           echo ::set-output name=RENAMED_APK::${SIGNED_APK%/*}/BraveNewPipe_${SOURCE_TAG}.apk
-          #echo $SOURCE_NAME
-          #echo $SOURCE_BRANCH
-          #echo $SOURCE_TAG
-          #ls -laht app/build/outputs/apk/release/*
           cp ${SIGNED_APK} ${SIGNED_APK%/*}/BraveNewPipe_${SOURCE_TAG}.apk
           cd ${SIGNED_APK%/*}
           sha256sum BraveNewPipe_${SOURCE_TAG}.apk > BraveNewPipe_${SOURCE_TAG}.apk.sha256
