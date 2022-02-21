@@ -89,8 +89,9 @@ jobs:
           files: |
             app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
         id: "automatic_releases"
-      - name: Upload more stuff
+      - name: pack all
         run: tar czpf apper.tgz app
+      - name: Upload more stuff
         uses: actions/upload-artifact@v2
         with:
           name: apple
