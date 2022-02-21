@@ -62,10 +62,21 @@ jobs:
           name: app
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
           #path: app/build/outputs/apk/release/*.apk
+      - name: Branch name
+        id: branch_name
+        run: |
+          echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
+          echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
+          echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
       - name: rename file 
-        run: cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/app-first.apk
-      - name: rename file again
-        run: cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/BraveNewPipe_${GITHUB_REF#refs/tags/}.apk
+        run: |
+          echo $SOURCE_NAME
+          echo $SOURCE_BRANCH
+          echo $SOURCE_TAG
+          ls -laht app/build/outputs/apk/release/*
+          cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/app-first.apk
+          cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/app-second.apk
+          cp app/build/outputs/apk/release/app-release-unsigned-signed.apk app/build/outputs/apk/release/BraveNewPipe_${SOURCE_TAG}.apk
       - name: auto release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
@@ -73,10 +84,10 @@ jobs:
           prerelease: false
           files: |
             ${{steps.sign_app.outputs.signedReleaseFile}}
-            app/build/outputs/apk/release/BraveNewPipe_${GITHUB_REF#refs/tags/}.apk
+            app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
             app/build/outputs/apk/release/app-release-unsigned-signed.apk
             app/build/outputs/apk/release/app-first.apk
-            ${{steps.sign_app.outputs}}/app-second.apk
+            ${{ steps.sign_app.outputs }}/app-second.apk
         id: "automatic_releases"
       #- name: upload artefact to App Center
       #  uses: wzieba/AppCenter-Github-Action@v1
