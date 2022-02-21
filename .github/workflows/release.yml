@@ -89,14 +89,13 @@ jobs:
           files: |
             app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
         id: "automatic_releases"
-      - name: pack all
-        run: tar czpf apper.tgz app
-      - name: Upload more stuff
-        uses: actions/upload-artifact@v2
-        with:
-          name: apple
-          path: apper.tgz
-          #path: app/build/outputs/apk/release/*.apk
+      # evermind - name: pack all app dir
+      # evermind   run: tar czpf apper.tgz app
+      # evermind - name: Upload app dir artifact more stuff
+      # evermind   uses: actions/upload-artifact@v2
+      # evermind   with:
+      # evermind     name: appDir
+      # evermind     path: apper.tgz
       #- name: upload artefact to App Center
       #  uses: wzieba/AppCenter-Github-Action@v1
       #  with:
