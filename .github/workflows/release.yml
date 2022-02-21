@@ -94,7 +94,6 @@ jobs:
           files: |
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}.sha256
-            #app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
         id: "automatic_releases"
       # evermind - name: pack all app dir
       # evermind   run: tar czpf apper.tgz app
