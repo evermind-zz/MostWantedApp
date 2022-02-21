@@ -69,7 +69,8 @@ jobs:
           echo ::set-output name=SOURCE_NAME::${GITHUB_REF#refs/*/}
           echo ::set-output name=SOURCE_BRANCH::${GITHUB_REF#refs/heads/}
           echo ::set-output name=SOURCE_TAG::${GITHUB_REF#refs/tags/}
-      - name: rename apk
+      # evermind
+      - name: rename apk and create checksum
         id: renamed_apk
         env:
           SOURCE_NAME: ${{ steps.branch_name.outputs.SOURCE_NAME }}
