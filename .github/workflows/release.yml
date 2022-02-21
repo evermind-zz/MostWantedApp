@@ -83,7 +83,7 @@ jobs:
           sha256sum BraveNewPipe_${SOURCE_TAG}.apk > BraveNewPipe_${SOURCE_TAG}.apk.sha256
           cd -
           ls -laht app/build/outputs/apk/release/*
-      # evermind: how to autorelease?: How to get just the tag name?
+      # evermind: how to autorelease?: https://github.com/marvinpinto/action-automatic-releases
       - name: auto release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
