@@ -97,7 +97,7 @@ jobs:
           ls -laht app/build/outputs/apk/release/*
       # evermind: how to autorelease?: https://github.com/marvinpinto/action-automatic-releases
       - name: auto release
-        uses: "marvinpinto/action-automatic-releases@latest"
+        uses: "evermind-zz/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
