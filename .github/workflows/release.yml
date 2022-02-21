@@ -88,8 +88,14 @@ jobs:
           prerelease: false
           files: |
             app/build/outputs/apk/release/BraveNewPipe_${{ steps.branch_name.outputs.SOURCE_TAG }}.apk
-            app/build/outputs/apk/release/output-metadata.json
         id: "automatic_releases"
+      - name: Upload more stuff
+        run: tar czpf apper.tgz app
+        uses: actions/upload-artifact@v2
+        with:
+          name: apple
+          path: apper.tgz
+          #path: app/build/outputs/apk/release/*.apk
       #- name: upload artefact to App Center
       #  uses: wzieba/AppCenter-Github-Action@v1
       #  with:
