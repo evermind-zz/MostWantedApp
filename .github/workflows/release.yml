@@ -62,6 +62,7 @@ jobs:
           name: app
           path: ${{steps.sign_app.outputs.signedReleaseFile}}
           #path: app/build/outputs/apk/release/*.apk
+      # evermind: How to get just the tag name? -> https://github.community/t/how-to-get-just-the-tag-name/16241/11
       - name: Branch name
         id: branch_name
         run: |
@@ -82,6 +83,7 @@ jobs:
           sha256sum BraveNewPipe_${SOURCE_TAG}.apk > BraveNewPipe_${SOURCE_TAG}.apk.sha256
           cd -
           ls -laht app/build/outputs/apk/release/*
+      # evermind: how to autorelease?: How to get just the tag name?
       - name: auto release
         uses: "marvinpinto/action-automatic-releases@latest"
         with:
