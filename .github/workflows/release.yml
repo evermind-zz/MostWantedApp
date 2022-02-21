@@ -73,6 +73,7 @@ jobs:
           prerelease: false
           files: |
             ${{steps.sign_app.outputs.signedReleaseFile}}
+            app/build/outputs/apk/release/BraveNewPipe_${GITHUB_REF#refs/tags/}.apk
             app/build/outputs/apk/release/app-release-unsigned-signed.apk
             app/build/outputs/apk/release/app-first.apk
             ${{steps.sign_app.outputs}}/app-second.apk
