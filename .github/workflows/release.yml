@@ -25,22 +25,9 @@ jobs:
       #      echo  "${{ secrets.RELEASE_KEYSTORE }}" -d -o release.keystore release.keystore.asc
       #      gpg --batch --passphrase "${{ secrets.RELEASE_KEYSTORE_GPG }}" -d -o release.keystore release.keystore.asc
 
-      - name: generate Changelog
-        id: "gen_changelog"
+      - name: generate ChangeLog
         run: |
-          echo ::set-output name=CHANGELOG::"$(git show --no-patch HEAD  --format='%B')"
-          echo "CHANGE="$(git show --no-patch HEAD  --format='%B')"" >> $GITHUB_ENV
           git show --no-patch HEAD  --format='%B' > customChangeLog
-      - name: show me now
-        env:
-          CHANGELOG: "${{ steps.gen_changelog.outputs.CHANGELOG }}"
-        run: |
-          #echo -e "${CHANGELOG}"
-          cat customChangeLog
-          pwd
-          #echo "${{ env.CHANGE }}"
-          #echo "partout"
-          #echo "${CHANGELOG}"
       - name: set up JDK 11
         uses: actions/setup-java@v2
         with:
@@ -106,7 +93,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          change_log_file: "customChangeLog"
+          changelog_file: "customChangeLog"
           files: |
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}.sha256
