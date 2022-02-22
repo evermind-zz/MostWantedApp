@@ -30,11 +30,14 @@ jobs:
         run: |
           echo ::set-output name=CHANGELOG::"$(git show --no-patch HEAD  --format='%B')"
           echo "CHANGE="$(git show --no-patch HEAD  --format='%B')"" >> $GITHUB_ENV
+          git show --no-patch HEAD  --format='%B' > customChangeLog
       - name: show me now
         env:
           CHANGELOG: "${{ steps.gen_changelog.outputs.CHANGELOG }}"
         run: |
-          echo -e "${CHANGELOG}"
+          #echo -e "${CHANGELOG}"
+          cat customChangeLog
+          pwd
           #echo "${{ env.CHANGE }}"
           #echo "partout"
           #echo "${CHANGELOG}"
@@ -103,7 +106,7 @@ jobs:
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          release_text: "${{ env.CHANGE }}"
+          change_log_file: "customChangeLog"
           files: |
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}.sha256
