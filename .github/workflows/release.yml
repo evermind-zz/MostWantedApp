@@ -34,8 +34,8 @@ jobs:
         env:
           CHANGELOG: "${{ steps.gen_changelog.outputs.CHANGELOG }}"
         run: |
-          echo "${{ env.CHANGE }}"
-          #echo -e "${CHANGELOG}"
+          echo -e "${CHANGELOG}"
+          #echo "${{ env.CHANGE }}"
           #echo "partout"
           #echo "${CHANGELOG}"
       - name: set up JDK 11
