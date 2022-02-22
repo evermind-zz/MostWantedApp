@@ -28,7 +28,7 @@ jobs:
       - name: generate Changelog
         id: "gen_changelog"
         run: |
-          echo ::set-output name=CHANGELOG::$(git show --no-patch HEAD  --format='%B')
+          echo ::set-output name=CHANGELOG::"$(git show --no-patch HEAD  --format='%B')"
           echo "CHANGE="$(git show --no-patch HEAD  --format='%B')"" >> $GITHUB_ENV
       - name: show me now
         env:
