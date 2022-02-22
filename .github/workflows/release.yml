@@ -28,7 +28,7 @@ jobs:
       - name: generate Changelog
         id: "gen_changelog"
         run: |
-          echo ::set-output name=CHANGELOG::"$(git show --no-patch HEAD  --format='%B')"
+          echo ::set-output name=CHANGELOG::$(git show --no-patch HEAD  --format='%B')
           echo "CHANGE=$(git show --no-patch HEAD  --format='%B')" >> $GITHUB_ENV
       - name: show me now
         env:
@@ -37,7 +37,7 @@ jobs:
           echo -e "${CHANGELOG}"
           echo "partout"
           echo "${CHANGELOG}"
-          #echo "${{ env.CHANGE }}"
+          echo "${{ env.CHANGE }}"
       - name: set up JDK 11
         uses: actions/setup-java@v2
         with:
