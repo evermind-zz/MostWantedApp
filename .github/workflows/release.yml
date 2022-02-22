@@ -37,7 +37,7 @@ jobs:
           echo -e "${CHANGELOG}"
           echo "partout"
           echo "${CHANGELOG}"
-          echo "${{ env.CHANGE }}"
+          #echo "${{ env.CHANGE }}"
       - name: set up JDK 11
         uses: actions/setup-java@v2
         with:
