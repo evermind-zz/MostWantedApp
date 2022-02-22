@@ -88,12 +88,12 @@ jobs:
           cd -
           ls -laht app/build/outputs/apk/release/*
       # evermind: how to autorelease?: https://github.com/marvinpinto/action-automatic-releases
-      - name: auto release BraveNewPipe
+      - name: auto release
         uses: "evermind-zz/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: false
-          change_log_file: "customChangeLog"
+          changelog_file: "customChangeLog"
           files: |
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}.sha256
