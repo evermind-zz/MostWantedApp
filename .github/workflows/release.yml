@@ -29,7 +29,7 @@ jobs:
         id: "gen_changelog"
         run: |
           echo ::set-output name=CHANGELOG::$(git show --no-patch HEAD  --format='%B')
-          echo "CHANGE=$(git show --no-patch HEAD  --format='%B')" >> $GITHUB_ENV
+          echo "CHANGE="$(git show --no-patch HEAD  --format='%B')"" >> $GITHUB_ENV
       - name: show me now
         env:
           CHANGELOG: "${{ steps.gen_changelog.outputs.CHANGELOG }}"
