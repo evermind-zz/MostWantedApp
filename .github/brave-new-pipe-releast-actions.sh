@@ -81,7 +81,9 @@ END
 
 URL="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
 VERSION_NAME=${TAG/v/} 
-VERSION_CODE="$(aapt d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
+AAPT=$ANDROID_HOME/$BUILD_TOOLS_VERSION/aapt
+env
+VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
 
 TEMPFILE="$(mktemp  -p $PWD -t sdflhXXXXXXXXX)"
 JSON_FILE=data.json
