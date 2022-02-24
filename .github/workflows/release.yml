@@ -98,6 +98,13 @@ jobs:
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}
             ${{ steps.renamed_apk.outputs.RENAMED_APK }}.sha256
         id: "automatic_releases"
+      - name: "Automatically blow the wizzle"
+        env:
+          GITHUB_SUPER_TOKEN: ${{ secrets.MY_GITHUB_SUPER_TOKEN }}
+          RENAMED_APK: ${{ steps.renamed_apk.outputs.RENAMED_APK }}
+        run: |
+          ./.github/brave-new-pipe-releast-actions.sh "$AUTOMATIC_RELEASES_TAG" "${RENAMED_APK}"
+
       # evermind - name: pack all app dir
       # evermind   run: tar czpf apper.tgz app
       # evermind - name: Upload app dir artifact more stuff
