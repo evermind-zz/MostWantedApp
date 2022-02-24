@@ -82,7 +82,7 @@ END
 URL="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
 VERSION_NAME=${TAG/v/} 
 BUILD_TOOLS_VERSION=${BUILD_TOOLS_VERSION:-'29.0.3'}
-AAPT=$ANDROID_HOME/$BUILD_TOOLS_VERSION/aapt
+AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 find $ANDROID_HOME -name 'aapt'
 env
 VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
