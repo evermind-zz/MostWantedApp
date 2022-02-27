@@ -3,7 +3,7 @@
 set -e
 
 if [[ $# -ne 2 ]]; then
-  echo "This needs a release tag. and a apk file:"
+  echo "This needs a release tag and a apk file:"
   echo "e.g. $0 v0.0.1 BraveNewPipe.apk"
   exit 1
 fi
@@ -12,9 +12,11 @@ if [[ -z "$GITHUB_SUPER_TOKEN" ]]; then
   echo "This script needs a GitHub personal access token."
   exit 1
 fi
-BNP_R_MGR_REPO="bnp-r-mgr"
+
 TAG=$1
 APK_FILE=$2
+
+BNP_R_MGR_REPO="bnp-r-mgr"
 GITHUB_LOGIN="evermind-zz"
 RELEASE_BODY="Apk available at bravenewpipe/NewPipe@${TAG}](https://github.com/bravenewpipe/NewPipe/releases/tag/${TAG})."
 
@@ -36,7 +38,6 @@ create_tagged_release() {
   # Set the local git identity
   git config user.email "${GITHUB_LOGIN}@users.noreply.github.com"
   git config user.name "$GITHUB_LOGIN"
-date
 
   # Obtain the release ID for the previous release of $TAG (if present)
   local previous_release_id=$(curl --user ${GITHUB_LOGIN}:${GITHUB_SUPER_TOKEN} --request GET --silent https://api.github.com/repos/${GITHUB_LOGIN}/${REPO}/releases/tags/${TAG} | jq '.id')
@@ -50,7 +51,6 @@ date
       --silent \
       https://api.github.com/repos/${GITHUB_LOGIN}/${REPO}/releases/${previous_release_id}
   fi
-date
 
   # Delete previous identical tags, if present
   git tag -d $TAG || true
@@ -62,7 +62,6 @@ date
   git push -f origin master:master
   git tag $TAG
   git push origin $TAG
-date
 
 # evermind -- we don't want any release entries there  # Generate a skeleton release on GitHub
 # evermind -- we don't want any release entries there  curl \
@@ -82,32 +81,25 @@ date
   popd
 }
 
-URL="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
-VERSION_NAME=${TAG/v/} 
-date
-
 BUILD_TOOLS_VERSION="${BUILD_TOOLS_VERSION:-29.0.3}"
 AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 
+URL="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
+VERSION_NAME=${TAG/v/}
 VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
-date
-TEMPFILE="$(mktemp  -p $PWD -t sdflhXXXXXXXXX)"
-JSON_FILE=data.json
 
-# updating json release
+TEMPFILE="$(mktemp  -p /tmp -t sdflhXXXXXXXXX)"
+JSON_FILE=/tmp/${BNP_R_MGR_REPO}/api/data.json
+
+# checkout json release file repo
 rm -rf "/tmp/${BNP_R_MGR_REPO}"
 git clone "https://evermind-zz:${GITHUB_SUPER_TOKEN}@github.com/evermind-zz/${BNP_R_MGR_REPO}.git" /tmp/${BNP_R_MGR_REPO}
-# update the json file
-date
-cat /tmp/${BNP_R_MGR_REPO}/api/$JSON_FILE \
+# update version{code,name} and download url
+cat $JSON_FILE \
     | jq '.flavors.github.stable.version_code = '${VERSION_CODE}'' \
     | jq '.flavors.github.stable.version = "'${VERSION_NAME}'"' \
     | jq '.flavors.github.stable.apk = "'${URL}'"' \
     > $TEMPFILE
-date
+mv $TEMPFILE $JSON_FILE
 
-mv $TEMPFILE /tmp/${BNP_R_MGR_REPO}/api/$JSON_FILE
-date
 create_tagged_release "$BNP_R_MGR_REPO" "\"version\": \"$VERSION_NAME\""
-date
-
